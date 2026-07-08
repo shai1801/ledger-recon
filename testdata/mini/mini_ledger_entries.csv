@@ -1,0 +1,6 @@
+entry_id,account_id,txn_id,source_system,direction,amount_cents,currency,event_time,posted_at,shard_id,description
+LE-M1,ACC-M1,TXN-M1,CARD,CREDIT,1000,USD,2026-01-05T09:00:00Z,2026-01-05T09:05:00Z,shard-1,valid credit
+LE-M2,ACC-M1,TXN-M2,ACH,DEBIT,500,USD,2026-01-05T10:00:00Z,2026-01-05T10:05:00Z,shard-1,valid debit
+LE-M2,ACC-M1,TXN-M2,ACH,DEBIT,500,USD,2026-01-05T10:00:00Z,2026-01-05T10:05:00Z,shard-2,duplicate debit
+LE-M3,ACC-M2,TXN-M3,CORE,CREDIT,-100,USD,2026-01-05T11:00:00Z,2026-01-05T11:05:00Z,shard-1,invalid negative amount
+LE-M4,ACC-M2,TXN-M4,CORE,CREDIT,2000,USD,2026-01-05T12:00:00Z,2026-01-05T12:05:00Z,shard-1,valid credit reversed later

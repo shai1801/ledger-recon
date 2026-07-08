@@ -1,0 +1,15 @@
+{
+  "input_accounts": 2,
+  "input_ledger_rows": 5,
+  "input_settlements": 4,
+  "input_adjustments": 1,
+  "valid_ledger_rows_after_dedupe": 3,
+  "duplicate_ledger_rows": 1,
+  "invalid_ledger_rows": 1,
+  "adjustments_applied": 1,
+  "normalized_ledger_entries": 4,
+  "matched_transactions": 3,
+  "unmatched_ledger": 1,
+  "unmatched_settlements": 1,
+  "notes": "The unmatched ledger entry is the reversal for LE-M4. The unmatched settlement is SET-M4."
+}
