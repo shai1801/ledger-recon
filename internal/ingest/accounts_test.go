@@ -48,8 +48,8 @@ func TestLoadAccounts(t *testing.T) {
 			t.Errorf("%s has currency %s, expected currency is %s", acc.AccountID, acc.Currency, w.Currency)
 		}
 
-		if acc.OpeningBalanceCent != w.OpeningBalanceCents {
-			t.Errorf("%s: Opening Balance = %d, want = %d", acc.AccountID, acc.OpeningBalanceCent, w.OpeningBalanceCents)
+		if acc.OpeningBalanceCents != w.OpeningBalanceCents {
+			t.Errorf("%s: Opening Balance = %d, want = %d", acc.AccountID, acc.OpeningBalanceCents, w.OpeningBalanceCents)
 		}
 	}
 }

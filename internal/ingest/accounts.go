@@ -123,13 +123,13 @@ func parserAccountRow(row []string, col map[string]int, sourceFile string,
 	}
 
 	return model.Account{
-		AccountID:          accountID,
-		CustomerID:         get("customer_id"),
-		AccountType:        get("account_type"),
-		Currency:           get("currency"),
-		OpeningBalanceCent: openingBalance,
-		Status:             get("Status"),
-		CreatedAt:          createdAt,
+		AccountID:           accountID,
+		CustomerID:          get("customer_id"),
+		AccountType:         get("account_type"),
+		Currency:            get("currency"),
+		OpeningBalanceCents: openingBalance,
+		Status:              get("Status"),
+		CreatedAt:           createdAt,
 	}, nil
 }
 
