@@ -1,0 +1,1 @@
+{"input_accounts":30,"input_ledger_rows":128,"input_settlements":104,"input_adjustments":6,"valid_ledger_rows_after_dedupe":122,"duplicate_ledger_rows":2,"invalid_ledger_rows":2,"adjustments_applied":4,"normalized_ledger_entries":124,"matched_transactions":87,"unmatched_ledger":37,"unmatched_settlements":17,"unknown_account_ledger_rows":1,"currency_mismatch_ledger_rows":1}

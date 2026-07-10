@@ -28,10 +28,10 @@ type CLIOverrides struct {
 
 type Resolver struct {
 	cli CLIOverrides
-	cfg rawConfig
+	cfg FileConfig
 }
 
-func NewResolver(cli CLIOverrides, cfg rawConfig) Resolver {
+func NewResolver(cli CLIOverrides, cfg FileConfig) Resolver {
 	return Resolver{cli: cli, cfg: cfg}
 }
 

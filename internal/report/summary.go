@@ -43,6 +43,8 @@ func BuildSummary(in SummaryInputs) model.Summary {
 		UnmatchedLedger:            len(in.UnmatchedLedger),
 		UnmatchedSettlements:       len(in.UnmatchedSettlements),
 		Notes:                      in.Notes,
+		UnknownAccountLedgerRows:   countByType(in.NormalizeExceptions, "unknown_account"),
+		CurrencyMismatchLedgerRows: countByType(in.NormalizeExceptions, "currency_mismatch"),
 	}
 }
 

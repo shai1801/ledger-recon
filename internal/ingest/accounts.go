@@ -128,7 +128,7 @@ func parserAccountRow(row []string, col map[string]int, sourceFile string,
 		AccountType:         get("account_type"),
 		Currency:            get("currency"),
 		OpeningBalanceCents: openingBalance,
-		Status:              get("Status"),
+		Status:              get("status"),
 		CreatedAt:           createdAt,
 	}, nil
 }

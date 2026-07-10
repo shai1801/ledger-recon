@@ -30,20 +30,25 @@ func LoadStore(path string) ([]map[string]any, error) {
 	return rows, nil
 }
 
-// Execute filters rows down to the given table, applies the parsed filter
-// expression (if non-empty), and truncates to limit. Original insertion
-// order is preserved throughout -- since every source table is already
-// deterministically ordered, no extra sort is needed to satisfy the
-// "deterministic ordering" requirement.
-func Execute(rows []map[string]any, table string, expression string, limit int) ([]map[string]any, error) {
-	var node Node
+// Execute filters rows down to the given table, combining the explicit
+// query expression (if any) with resolved dynamic filters (if any) via
+// AND, then truncates to limit. Original insertion order is preserved.
+func Execute(rows []map[string]any, table string, expression string, filters map[string]any, limit int) ([]map[string]any, error) {
+	var exprNode Node
 	if expression != "" {
 		parsed, err := NewParser(expression).Parse()
 		if err != nil {
 			return nil, fmt.Errorf("parsing query: %w", err)
 		}
-		node = parsed
+		exprNode = parsed
 	}
+
+	filterNode, err := BuildFilterNode(filters)
+	if err != nil {
+		return nil, err
+	}
+
+	node := combineAnd(exprNode, filterNode)
 
 	var results []map[string]any
 	for _, row := range rows {
@@ -51,11 +56,11 @@ func Execute(rows []map[string]any, table string, expression string, limit int) 
 			continue
 		}
 		if node != nil {
-			match, err := Evaluate(node, row)
+			ok, err := Evaluate(node, row)
 			if err != nil {
 				return nil, err
 			}
-			if !match {
+			if !ok {
 				continue
 			}
 		}
@@ -66,4 +71,14 @@ func Execute(rows []map[string]any, table string, expression string, limit int) 
 	}
 
 	return results, nil
+}
+
+func combineAnd(a, b Node) Node {
+	if a == nil {
+		return b
+	}
+	if b == nil {
+		return a
+	}
+	return AndNode{Left: a, Right: b}
 }

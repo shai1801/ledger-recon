@@ -16,4 +16,6 @@ type Summary struct {
 	UnmatchedLedger            int    `json:"unmatched_ledger"`
 	UnmatchedSettlements       int    `json:"unmatched_settlements"`
 	Notes                      string `json:"notes,omitempty"`
+	UnknownAccountLedgerRows   int    `json:"unknown_account_ledger_rows"`
+	CurrencyMismatchLedgerRows int    `json:"currency_mismatch_ledger_rows"`
 }

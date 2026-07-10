@@ -13,6 +13,11 @@ import (
 // leaves a partially-written or corrupt output file. A prior successful
 // output file remains fully intact right up until the rename succeeds.
 func WriteRecords[T any](dir, filename, format string, records []T) error {
+
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		return fmt.Errorf("creating output directory %q: %w", dir, err)
+	}
+
 	ext, err := extensionFor(format)
 	if err != nil {
 		return err

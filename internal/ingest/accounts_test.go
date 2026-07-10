@@ -31,9 +31,10 @@ func TestLoadAccounts(t *testing.T) {
 	want := map[string]struct {
 		Currency            string
 		OpeningBalanceCents int64
+		Status              string
 	}{
-		"ACC-M1": {Currency: "USD", OpeningBalanceCents: 10000},
-		"ACC-M2": {Currency: "USD", OpeningBalanceCents: 5000},
+		"ACC-M1": {Currency: "USD", OpeningBalanceCents: 10000, Status: "ACTIVE"},
+		"ACC-M2": {Currency: "USD", OpeningBalanceCents: 5000, Status: "ACTIVE"},
 	}
 
 	for _, acc := range accounts {
@@ -50,6 +51,9 @@ func TestLoadAccounts(t *testing.T) {
 
 		if acc.OpeningBalanceCents != w.OpeningBalanceCents {
 			t.Errorf("%s: Opening Balance = %d, want = %d", acc.AccountID, acc.OpeningBalanceCents, w.OpeningBalanceCents)
+		}
+		if acc.Status != w.Status {
+			t.Errorf("%s: status = %q, want %q", acc.AccountID, acc.Status, w.Status)
 		}
 	}
 }

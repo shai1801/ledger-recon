@@ -1,0 +1,8 @@
+{"ExceptionType":"missing_reference","Severity":"error","SourceFile":"adjustments.jsonl","Reason":"reference_entry_id \"LE-99999\" not found among valid ledger entries","LineNumber":0,"RecordID":"ADJ-BAD-001"}
+{"ExceptionType":"currency_mismatch","Severity":"error","SourceFile":"adjustments.jsonl","Reason":"CORRECTION currency \"JPY\" does not match referenced entry currency \"USD\"","LineNumber":0,"RecordID":"ADJ-BAD-002"}
+{"ExceptionType":"duplicate_entry","Severity":"warning","SourceFile":"ledger_entries.csv","Reason":"duplicate entry_id \"LE-00008\"; first occurrence retained, this row skipped","LineNumber":0,"RecordID":"LE-00008"}
+{"ExceptionType":"duplicate_entry","Severity":"warning","SourceFile":"ledger_entries.csv","Reason":"duplicate entry_id \"LE-00045\"; first occurrence retained, this row skipped","LineNumber":0,"RecordID":"LE-00045"}
+{"ExceptionType":"unknown_account","Severity":"error","SourceFile":"ledger_entries.csv","Reason":"account_id \"ACC-9999\" not found in account registry","LineNumber":0,"RecordID":"LE-BAD-002"}
+{"ExceptionType":"currency_mismatch","Severity":"error","SourceFile":"ledger_entries.csv","Reason":"entry currency \"JPY\" does not match account \"ACC-1004\" currency \"GBP\"","LineNumber":0,"RecordID":"LE-BAD-004"}
+{"ExceptionType":"malformed_row","Severity":"error","SourceFile":"ledger_entries.csv","Reason":"amount_cents must be positive, got -3500","LineNumber":126,"RecordID":"LE-BAD-001"}
+{"ExceptionType":"malformed_row","Severity":"error","SourceFile":"ledger_entries.csv","Reason":"invalid direction \"TRANSFER\": must be CREDIT or DEBIT","LineNumber":128,"RecordID":"LE-BAD-003"}
