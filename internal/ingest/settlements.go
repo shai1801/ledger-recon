@@ -141,7 +141,7 @@ func parseSettlementRow(row []string, col map[string]int, sourceFile string, lin
 		}
 	}
 
-	settlement.AccountID = settlementID
+	settlement.SettlementID = settlementID
 	settlement.AccountID = get("account_id")
 	settlement.AmountCents = amountCents
 	settlement.BankRef = get("bank_ref")
