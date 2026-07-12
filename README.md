@@ -178,20 +178,54 @@ resolved as follows, and flagged here rather than hidden in code:
 
 ## 7. Testing methodology
 
-- **Unit tests per `ingest` loader**: happy path against `testdata/mini`,
-  plus a table-driven suite of malformed-row cases (empty required fields,
-  invalid enums, non-numeric amounts, invalid timestamps, wrong column
-  counts) and a missing-required-column structural-error case.
-- **`normalize`/`adjust`/`match`**: validated by hand against
-  `testdata/mini/mini_expected/expected_summary.json`, tracing every input
-  row through every pipeline stage to confirm the final counts match exactly.
-- **`query`**: lexer/parser/evaluator tested independently of file I/O.
-- **Full-dataset smoke test**: `--reconcile` run against the complete
-  `DataMag_LedgerReconciliation_Data` set, with every summary count
-  hand-traced back to root causes (e.g. the 2 "missing" rows between
-  `valid_ledger_rows_after_dedupe` and `normalized_ledger_entries` were
-  traced to one `unknown_account` and one `currency_mismatch` exception,
-  confirming zero silent data loss anywhere in the pipeline).
+Two tiers, separated by a Go build tag so fast unit tests and the slower
+full-pipeline test can be run independently:
+
+```
+go test ./...                       # unit tests only (fast, default)
+go test -tags=integration ./...     # includes the mini-fixture integration test
+```
+
+**Unit tests:**
+- **`ingest`** (one file per loader: `accounts_test.go`, `ledger_test.go`,
+  `settlements_test.go`, `adjustments_test.go`): happy path against
+  `testdata/mini`, asserting every field of the returned struct (not just a
+  subset — an earlier version of this suite only checked 2 of 7 `Account`
+  fields and missed a real column-name bug as a result). Each also has a
+  table-driven suite of malformed-row cases (empty required fields, invalid
+  enums, non-numeric amounts, invalid timestamps, wrong column counts) and a
+  missing-required-column structural-error case.
+- **`normalize`**: dedup (first-occurrence-wins), sign conversion,
+  currency-mismatch exclusion, and unknown-account exclusion, each as an
+  isolated case plus a full mini-fixture trace.
+- **`adjust`**: REVERSAL happy path (sign flip, `txn_id` inheritance,
+  `entry_id` = `adjustment_id`), CORRECTION happy path (magnitude +
+  original-direction sign), CORRECTION missing-amount and currency-mismatch
+  rejection, and missing-reference handling.
+- **`match`**: mini-fixture trace, tolerance boundary (exactly at
+  `tolerance_cents` vs. one cent over), window direction (settlement dated
+  before `posted_at`, and beyond `matching_window_days`), and
+  `include_pending_settlements` opt-in behavior.
+- **`query`**: lexer (full expression tokenization, every operator, negative
+  numbers, case-insensitive `AND`/`OR`, unterminated-string handling),
+  with parser/evaluator/filter-suffix coverage following the same pattern.
+
+**Integration test** (`cmd/ledger-recon/reconcile_integration_test.go`,
+tagged `integration`): runs the complete pipeline — `ingest` → `normalize` →
+`adjust` → `match` → `report.BuildSummary` — directly against
+`testdata/mini`, then asserts all 12 numeric fields of the resulting summary
+against `testdata/mini/mini_expected/expected_summary.json` exactly. Because
+`testdata/mini` has no `configuration.json` of its own, `tolerance_cents`
+and `matching_window_days` are supplied explicitly (`2` and `3`, matching
+the real `configuration.json`) via `config.CLIOverrides` rather than relying
+on this project's zero-value defaults.
+
+**Full-dataset smoke test**: `--reconcile` run against the complete
+`DataMag_LedgerReconciliation_Data` set, with every summary count traced
+back to root causes — e.g. the 2 "missing" rows between
+`valid_ledger_rows_after_dedupe` and `normalized_ledger_entries` were traced
+to one `unknown_account` and one `currency_mismatch` exception, confirming
+zero silent data loss anywhere in the pipeline.
 
 ---
 
